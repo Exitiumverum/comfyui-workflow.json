@@ -12,7 +12,7 @@
       },
       "17": {
         "inputs": {
-          "ckpt_name": "juggernaut_xl_lightning_by_rd.safetensors"
+          "ckpt_name": "juggernaut_xl_lightning.safetensors"
         },
         "class_type": "CheckpointLoaderSimple",
         "_meta": {
