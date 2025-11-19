@@ -24,20 +24,8 @@ RUN comfy node install --exit-on-fail comfyui-custom-scripts@1.2.5
 
 # download models into comfyui
 
-# Hugging Face API token for downloading gated models
-ARG HF_API_TOKEN
-ENV HF_API_TOKEN=${HF_API_TOKEN}
+RUN comfy model download --url https://fileport.io/get/3hUEsES9nrdwceztMVSLRwNxqy7wXQ_iCHdwB2ohwLEQ9qXQB95_MNi9eyHJCeB470QlATurb9hEGgH68JEmI8nZ-kNui8JtGHB1gsv04Ot9G4g_rV_iZRU2pVlMo_zlR_grFvMXLCvjmL9VSeuH5W7XunrDIxe-you_JA33lluhjrIs0Bj897qbVbqIi-lteRjRqplbZuvDSJik6uG_9RMU6MW5XqyRmGgsiTx3mRr7fEm66F2sPEf74NTIPimuo --relative-path models/vae --filename ae.safetensors
 
-# Download VAE model (requires HF token for gated model)
-RUN mkdir -p /comfyui/models/vae && \
-    if [ -n "$HF_API_TOKEN" ]; then \
-        wget --header="Authorization: Bearer $HF_API_TOKEN" \
-             -O /comfyui/models/vae/ae.safetensors \
-             https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/main/ae.safetensors; \
-    else \
-        echo "⚠️  HF_API_TOKEN not set, skipping ae.safetensors download"; \
-    fi
-    
 RUN comfy model download --url https://huggingface.co/Comfy-Org/stable-diffusion-3.5-fp8/resolve/main/text_encoders/clip_l.safetensors --relative-path models/clip --filename clip_l.safetensors
 
 RUN comfy model download --url https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp8_e4m3fn.safetensors --relative-path models/clip --filename t5xxl_fp8_e4m3fn.safetensors
