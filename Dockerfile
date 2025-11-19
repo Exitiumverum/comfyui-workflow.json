@@ -30,7 +30,7 @@ RUN comfy model download --url https://huggingface.co/Comfy-Org/stable-diffusion
 
 RUN comfy model download --url https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp8_e4m3fn.safetensors --relative-path models/clip --filename t5xxl_fp8_e4m3fn.safetensors
 
-RUN comfy model download --url https://huggingface.co/wikeeyang/SRPO-Refine-Quantized-v1.0/blob/main/Flux1-Dev-SRPO-v1-fp8.safetensors --relative-path models/diffusion_models --filename Flux1-Dev-SRPO-v1-fp8.safetensors
+# RUN comfy model download --url https://huggingface.co/wikeeyang/SRPO-Refine-Quantized-v1.0/blob/main/Flux1-Dev-SRPO-v1-fp8.safetensors --relative-path models/diffusion_models --filename Flux1-Dev-SRPO-v1-fp8.safetensors
 
 RUN comfy model download --url https://huggingface.co/Phips/4xFFHQDAT/blob/f73a004690ab04143c5e7ec8b7491d70124432c8/4xFFHQDAT.safetensors --relative-path models/upscale_models --filename 4xFFHQDAT.safetensors
 
