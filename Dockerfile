@@ -24,11 +24,18 @@ RUN comfy node install --exit-on-fail comfyui-custom-scripts@1.2.5
 
 # download models into comfyui
 
+# Hugging Face API token for downloading gated models
+ARG HF_API_TOKEN
+ENV HF_API_TOKEN=${HF_API_TOKEN}
+
+# Download VAE model (requires HF token for gated model)
 RUN comfy model download --url https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/main/ae.safetensors --relative-path models/vae --filename ae.safetensors
 
 RUN comfy model download --url https://huggingface.co/Comfy-Org/stable-diffusion-3.5-fp8/resolve/main/text_encoders/clip_l.safetensors --relative-path models/clip --filename clip_l.safetensors
 
 RUN comfy model download --url https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp8_e4m3fn.safetensors --relative-path models/clip --filename t5xxl_fp8_e4m3fn.safetensors
+
+RUN comfy model download --url https://huggingface.co/wikeeyang/SRPO-Refine-Quantized-v1.0/blob/main/Flux1-Dev-SRPO-v1-fp8.safetensors --relative-path models/diffusion_models --filename Flux1-Dev-SRPO-v1-fp8.safetensors
 
 RUN comfy model download --url https://huggingface.co/Phips/4xFFHQDAT/blob/f73a004690ab04143c5e7ec8b7491d70124432c8/4xFFHQDAT.safetensors --relative-path models/upscale_models --filename 4xFFHQDAT.safetensors
 
@@ -40,14 +47,6 @@ RUN comfy model download --url https://huggingface.co/camenduru/FLUX.1-dev/resol
 RUN comfy model download --url https://huggingface.co/RunDiffusion/Juggernaut-XL-Lightning/resolve/main/Juggernaut_RunDiffusionPhoto2_Lightning_4Steps.safetensors --relative-path models/checkpoints --filename juggernaut_xl_lightning_by_rd.safetensors
 
 RUN comfy model download --url https://huggingface.co/camenduru/SUPIR/resolve/main/SUPIR-v0F.ckpt --relative-path models/checkpoints --filename SUPIR-v0F.ckpt
-
-RUN comfy model download --url https://huggingface.co/wikeeyang/SRPO-Refine-Quantized-v1.0/blob/main/Flux1-Dev-SRPO-v1-fp8.safetensors --relative-path models/diffusion_models --filename Flux1-Dev-SRPO-v1-fp8.safetensors
-
-RUN comfy model download --url https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/main/ae.safetensors --relative-path models/vae --filename ae.safetensors
-
-RUN comfy model download --url https://huggingface.co/wikeeyang/SRPO-Refine-Quantized-v1.0/blob/main/Flux1-Dev-SRPO-v1-fp8.safetensors --relative-path models/diffusion_models --filename Flux1-Dev-SRPO-v1-fp8.safetensors
-
-RUN comfy model download --url https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/main/ae.safetensors --relative-path models/vae --filename ae.safetensors
 
 # copy all input data (like images or videos) into comfyui (uncomment and adjust if needed)
 
