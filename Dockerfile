@@ -43,6 +43,8 @@ RUN comfy model download --url https://huggingface.co/RunDiffusion/Juggernaut-XL
 
 RUN comfy model download --url https://huggingface.co/camenduru/SUPIR/resolve/main/SUPIR-v0F.ckpt --relative-path models/checkpoints --filename SUPIR-v0F.ckpt
 
+RUN comfy model download --url https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/main/ae.safetensors --relative-path models/vae --filename ae.safetensors
+
 # copy all input data (like images or videos) into comfyui (uncomment and adjust if needed)
 
 # COPY input/ /comfyui/input/
