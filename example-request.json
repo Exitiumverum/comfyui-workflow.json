@@ -1,0 +1,850 @@
+{
+  "input": {
+    "workflow": {
+      "1": {
+        "inputs": {
+          "image": "21299bc87bf3194d3adf9929918981c2250a3a16cd2062bf40d0762a1d1114ab.jpg"
+        },
+        "class_type": "LoadImage",
+        "_meta": {
+          "title": "LoadImage"
+        }
+      },
+      "17": {
+        "inputs": {
+          "ckpt_name": "juggernaut_xl_lightning_by_rd.safetensors"
+        },
+        "class_type": "CheckpointLoaderSimple",
+        "_meta": {
+          "title": "CheckpointLoaderSimple"
+        }
+      },
+      "18": {
+        "inputs": {
+          "filename": "SUPIR-v0F.ckpt",
+          "model": [
+            "17",
+            0
+          ],
+          "clip": [
+            "17",
+            1
+          ],
+          "vae": [
+            "17",
+            2
+          ]
+        },
+        "class_type": "SUPIR_model_loader_v2",
+        "_meta": {
+          "title": "SUPIR_model_loader_v2"
+        }
+      },
+      "19": {
+        "inputs": {
+          "value": true,
+          "SUPIR_VAE": [
+            "18",
+            1
+          ],
+          "image": [
+            "26",
+            0
+          ]
+        },
+        "class_type": "SUPIR_first_stage",
+        "_meta": {
+          "title": "SUPIR_first_stage"
+        }
+      },
+      "20": {
+        "inputs": {
+          "value": true,
+          "SUPIR_VAE": [
+            "19",
+            0
+          ],
+          "image": [
+            "19",
+            1
+          ]
+        },
+        "class_type": "SUPIR_encode",
+        "_meta": {
+          "title": "SUPIR_encode"
+        }
+      },
+      "21": {
+        "inputs": {
+          "value": 563013456511004,
+          "SUPIR_model": [
+            "18",
+            0
+          ],
+          "latents": [
+            "19",
+            2
+          ],
+          "positive": [
+            "22",
+            0
+          ],
+          "negative": [
+            "22",
+            1
+          ],
+          "seed": [
+            "323",
+            0
+          ]
+        },
+        "class_type": "SUPIR_sample",
+        "_meta": {
+          "title": "SUPIR_sample"
+        }
+      },
+      "22": {
+        "inputs": {
+          "text": "photograph of a woman, natural look, detailed skin texture, realistic photo, highly detailed, 8k, photorealistic",
+          "SUPIR_model": [
+            "18",
+            0
+          ],
+          "latents": [
+            "20",
+            0
+          ]
+        },
+        "class_type": "SUPIR_conditioner",
+        "_meta": {
+          "title": "SUPIR_conditioner"
+        }
+      },
+      "24": {
+        "inputs": {
+          "value": true,
+          "SUPIR_VAE": [
+            "19",
+            0
+          ],
+          "latents": [
+            "21",
+            0
+          ]
+        },
+        "class_type": "SUPIR_decode",
+        "_meta": {
+          "title": "SUPIR_decode"
+        }
+      },
+      "26": {
+        "inputs": {
+          "text": "lanczos",
+          "image": [
+            "376",
+            0
+          ]
+        },
+        "class_type": "ImageScaleBy",
+        "_meta": {
+          "title": "ImageScaleBy"
+        }
+      },
+      "323": {
+        "inputs": {
+          "value": 3029930646068
+        },
+        "class_type": "easy seed",
+        "_meta": {
+          "title": "easy seed"
+        }
+      },
+      "371": {
+        "inputs": {
+          "model_name": "1x-ITF-SkinDiffDetail-Lite-v1.pth"
+        },
+        "class_type": "UpscaleModelLoader",
+        "_meta": {
+          "title": "UpscaleModelLoader"
+        }
+      },
+      "376": {
+        "inputs": {
+          "upscale_model": [
+            "371",
+            0
+          ],
+          "image": [
+            "1",
+            0
+          ]
+        },
+        "class_type": "ImageUpscaleWithModel",
+        "_meta": {
+          "title": "ImageUpscaleWithModel"
+        }
+      },
+      "377": {
+        "inputs": {
+          "value": 2.5,
+          "conditioning": [
+            "386",
+            0
+          ]
+        },
+        "class_type": "FluxGuidance",
+        "_meta": {
+          "title": "FluxGuidance"
+        }
+      },
+      "379": {
+        "inputs": {
+          "value": 1024,
+          "samples": [
+            "410",
+            0
+          ]
+        },
+        "class_type": "VAEDecodeTiled",
+        "_meta": {
+          "title": "VAEDecodeTiled"
+        }
+      },
+      "380": {
+        "inputs": {
+          "text": "Percentage",
+          "image": [
+            "391",
+            0
+          ],
+          "left": [
+            "429",
+            0
+          ],
+          "right": [
+            "429",
+            0
+          ],
+          "top": [
+            "429",
+            0
+          ],
+          "bottom": [
+            "429",
+            0
+          ]
+        },
+        "class_type": "easy imageInsetCrop",
+        "_meta": {
+          "title": "Boost Prompt Focus"
+        }
+      },
+      "383": {
+        "inputs": {
+          "text": [
+            "404",
+            2
+          ]
+        },
+        "class_type": "CLIPTextEncode",
+        "_meta": {
+          "title": "CLIPTextEncode"
+        }
+      },
+      "384": {
+        "inputs": {
+          "conditionings": [
+            "383",
+            0
+          ]
+        },
+        "class_type": "TTP_condtobatch",
+        "_meta": {
+          "title": "TTP_condtobatch"
+        }
+      },
+      "386": {
+        "inputs": {
+          "value": 1,
+          "conditioning_batch": [
+            "384",
+            0
+          ],
+          "coordinates": [
+            "398",
+            0
+          ]
+        },
+        "class_type": "TTP_condsetarea_merge",
+        "_meta": {
+          "title": "TTP_condsetarea_merge"
+        }
+      },
+      "391": {
+        "inputs": {
+          "image": [
+            "402",
+            0
+          ]
+        },
+        "class_type": "easy imageBatchToImageList",
+        "_meta": {
+          "title": "easy imageBatchToImageList"
+        }
+      },
+      "392": {
+        "inputs": {
+          "filename": "microsoft/Florence-2-base"
+        },
+        "class_type": "DownloadAndLoadFlorence2Model",
+        "_meta": {
+          "title": "DownloadAndLoadFlorence2Model"
+        }
+      },
+      "396": {
+        "inputs": {
+          "value": 2,
+          "image": [
+            "468",
+            0
+          ]
+        },
+        "class_type": "TTP_Tile_image_size",
+        "_meta": {
+          "title": "TTP_Tile_image_size"
+        }
+      },
+      "398": {
+        "inputs": {
+          "Positions": [
+            "402",
+            1
+          ]
+        },
+        "class_type": "TTP_CoordinateSplitter",
+        "_meta": {
+          "title": "TTP_CoordinateSplitter"
+        }
+      },
+      "402": {
+        "inputs": {
+          "value": 1024,
+          "image": [
+            "468",
+            0
+          ],
+          "tile_width": [
+            "396",
+            0
+          ],
+          "tile_height": [
+            "396",
+            1
+          ]
+        },
+        "class_type": "TTP_Image_Tile_Batch",
+        "_meta": {
+          "title": "TTP_Image_Tile_Batch"
+        }
+      },
+      "404": {
+        "inputs": {
+          "text": "",
+          "image": [
+            "380",
+            0
+          ],
+          "florence2_model": [
+            "392",
+            0
+          ]
+        },
+        "class_type": "Florence2Run",
+        "_meta": {
+          "title": "Florence2Run"
+        }
+      },
+      "405": {
+        "inputs": {
+          "filename": "Flux1-Dev-SRPO-v1-fp8.safetensors"
+        },
+        "class_type": "UNETLoader",
+        "_meta": {
+          "title": "UNETLoader"
+        }
+      },
+      "406": {
+        "inputs": {
+          "filename": "clip_l.safetensors"
+        },
+        "class_type": "DualCLIPLoader",
+        "_meta": {
+          "title": "DualCLIPLoader"
+        }
+      },
+      "407": {
+        "inputs": {
+          "filename": "ae.safetensors"
+        },
+        "class_type": "VAELoader",
+        "_meta": {
+          "title": "VAELoader"
+        }
+      },
+      "409": {
+        "inputs": {
+          "filename": "flux1-turbo-alpha-8steps.safetensors",
+          "model": [
+            "405",
+            0
+          ]
+        },
+        "class_type": "LoraLoaderModelOnly",
+        "_meta": {
+          "title": "LoraLoaderModelOnly"
+        }
+      },
+      "410": {
+        "inputs": {
+          "seed": [
+            "411",
+            0
+          ],
+          "steps": 8,
+          "cfg": 1,
+          "sampler_name": "euler",
+          "scheduler": "simple",
+          "denoise": 0.20000000000000004,
+          "positive": [
+            "377",
+            0
+          ],
+          "negative": [
+            "412",
+            0
+          ],
+          "latent_image": [
+            "449",
+            0
+          ]
+        },
+        "class_type": "KSampler",
+        "_meta": {
+          "title": "KSampler"
+        }
+      },
+      "411": {
+        "inputs": {
+          "value": 437411648324469
+        },
+        "class_type": "easy seed",
+        "_meta": {
+          "title": "easy seed"
+        }
+      },
+      "412": {
+        "inputs": {
+          "conditioning": [
+            "377",
+            0
+          ]
+        },
+        "class_type": "ConditioningZeroOut",
+        "_meta": {
+          "title": "ConditioningZeroOut"
+        }
+      },
+      "413": {
+        "inputs": {
+          "value": [
+            {
+              "name": "A",
+              "selected": true,
+              "url": "/view?filename=rgthree.compare._temp_harxm_00001_jatlh_1758097135.jpg&type=temp&subfolder=&rand=0.15240149648694423&Rh-Comfy-Auth=eyJ1c2VySWQiOiIwYjgwZjE2ZGU1NTVhY2I1YWUxYWNjYmQxOWVlOWRiMSIsInNpZ25FeHBpcmUiOjE3NTg2OTg0MzIzMzcsInRzIjoxNzU4MDkzNjMyMzM3LCJzaWduIjoiYjMyYmNiOWI5ZTcxYTIxOWUyMWM3NmQ2ZjU0ZTQ4NzUifQ==&Rh-Identify=0b80f16de555acb5ae1accbd19ee9db1"
+            },
+            {
+              "name": "B",
+              "selected": true,
+              "url": "/view?filename=rgthree.compare._temp_harxm_00002_kxzio_1758097139.jpg&type=temp&subfolder=&rand=0.04895763605680159&Rh-Comfy-Auth=eyJ1c2VySWQiOiIwYjgwZjE2ZGU1NTVhY2I1YWUxYWNjYmQxOWVlOWRiMSIsInNpZ25FeHBpcmUiOjE3NTg2OTg0MzIzMzcsInRzIjoxNzU4MDkzNjMyMzM3LCJzaWduIjoiYjMyYmNiOWI5ZTcxYTIxOWUyMWM3NmQ2ZjU0ZTQ4NzUifQ==&Rh-Identify=0b80f16de555acb5ae1accbd19ee9db1"
+            }
+          ],
+          "image_a": [
+            "379",
+            0
+          ],
+          "image_b": [
+            "470",
+            0
+          ]
+        },
+        "class_type": "Image Comparer (rgthree)",
+        "_meta": {
+          "title": "Image Comparer (rgthree)"
+        }
+      },
+      "416": {
+        "inputs": {
+          "model_name": "4xFFHQDAT.safetensors"
+        },
+        "class_type": "UpscaleModelLoader",
+        "_meta": {
+          "title": "UpscaleModelLoader"
+        }
+      },
+      "417": {
+        "inputs": {
+          "text": "lanczos",
+          "image": [
+            "442",
+            0
+          ]
+        },
+        "class_type": "ImageScaleBy",
+        "_meta": {
+          "title": "ImageScaleBy"
+        }
+      },
+      "426": {
+        "inputs": {
+          "text": "supir-result",
+          "IMAGE": [
+            "24",
+            0
+          ]
+        },
+        "class_type": "SetNode",
+        "_meta": {
+          "title": "Set_supir-result"
+        }
+      },
+      "428": {
+        "inputs": {
+          "text": "supir-result"
+        },
+        "class_type": "GetNode",
+        "_meta": {
+          "title": "Get_supir-result"
+        }
+      },
+      "429": {
+        "inputs": {
+          "value": 10
+        },
+        "class_type": "easy int",
+        "_meta": {
+          "title": "Border Crop Percentage"
+        }
+      },
+      "434": {
+        "inputs": {
+          "filename_prefix": "ComfyUI",
+          "images": [
+            "379",
+            0
+          ]
+        },
+        "class_type": "SaveImage",
+        "_meta": {
+          "title": "SaveImage"
+        }
+      },
+      "435": {
+        "inputs": {
+          "text": "always",
+          "any": [
+            "379",
+            0
+          ]
+        },
+        "class_type": "PlaySound|pysssss",
+        "_meta": {
+          "title": "PlaySound|pysssss"
+        }
+      },
+      "441": {
+        "inputs": {
+          "value": 2,
+          "image": [
+            "428",
+            0
+          ],
+          "rows": [
+            "444",
+            0
+          ],
+          "cols": [
+            "445",
+            0
+          ]
+        },
+        "class_type": "ImageTile+",
+        "_meta": {
+          "title": "ImageTile+"
+        }
+      },
+      "442": {
+        "inputs": {
+          "value": 0,
+          "tiles": [
+            "443",
+            0
+          ],
+          "overlap_x": [
+            "441",
+            3
+          ],
+          "overlap_y": [
+            "441",
+            4
+          ],
+          "rows": [
+            "444",
+            0
+          ],
+          "cols": [
+            "445",
+            0
+          ]
+        },
+        "class_type": "ImageUntile+",
+        "_meta": {
+          "title": "ImageUntile+"
+        }
+      },
+      "443": {
+        "inputs": {
+          "upscale_model": [
+            "416",
+            0
+          ],
+          "image": [
+            "441",
+            0
+          ]
+        },
+        "class_type": "ImageUpscaleWithModel",
+        "_meta": {
+          "title": "ImageUpscaleWithModel"
+        }
+      },
+      "444": {
+        "inputs": {
+          "value": 2
+        },
+        "class_type": "easy int",
+        "_meta": {
+          "title": "rows"
+        }
+      },
+      "445": {
+        "inputs": {
+          "value": 2
+        },
+        "class_type": "easy int",
+        "_meta": {
+          "title": "cols"
+        }
+      },
+      "449": {
+        "inputs": {
+          "value": 1024,
+          "pixels": [
+            "469",
+            0
+          ]
+        },
+        "class_type": "VAEEncodeTiled",
+        "_meta": {
+          "title": "VAEEncodeTiled"
+        }
+      },
+      "450": {
+        "inputs": {
+          "value": [
+            {
+              "name": "A",
+              "selected": true,
+              "url": "/view?filename=rgthree.compare._temp_pugkh_00001_ersrn_1758096876.jpg&type=temp&subfolder=&rand=0.4702961398116131&Rh-Comfy-Auth=eyJ1c2VySWQiOiIwYjgwZjE2ZGU1NTVhY2I1YWUxYWNjYmQxOWVlOWRiMSIsInNpZ25FeHBpcmUiOjE3NTg2OTg0MzIzMzcsInRzIjoxNzU4MDkzNjMyMzM3LCJzaWduIjoiYjMyYmNiOWI5ZTcxYTIxOWUyMWM3NmQ2ZjU0ZTQ4NzUifQ==&Rh-Identify=0b80f16de555acb5ae1accbd19ee9db1"
+            },
+            {
+              "name": "B",
+              "selected": true,
+              "url": "/view?filename=rgthree.compare._temp_pugkh_00002_fgkji_1758096878.jpg&type=temp&subfolder=&rand=0.5742033191055707&Rh-Comfy-Auth=eyJ1c2VySWQiOiIwYjgwZjE2ZGU1NTVhY2I1YWUxYWNjYmQxOWVlOWRiMSIsInNpZ25FeHBpcmUiOjE3NTg2OTg0MzIzMzcsInRzIjoxNzU4MDkzNjMyMzM3LCJzaWduIjoiYjMyYmNiOWI5ZTcxYTIxOWUyMWM3NmQ2ZjU0ZTQ4NzUifQ==&Rh-Identify=0b80f16de555acb5ae1accbd19ee9db1"
+            }
+          ],
+          "image_a": [
+            "24",
+            0
+          ],
+          "image_b": [
+            "466",
+            0
+          ]
+        },
+        "class_type": "Image Comparer (rgthree)",
+        "_meta": {
+          "title": "Image Comparer (rgthree)"
+        }
+      },
+      "453": {
+        "inputs": {
+          "value": [
+            {
+              "name": "A",
+              "selected": true,
+              "url": "/api/view?filename=rgthree.compare._temp_nahci_00001_.png&type=temp&subfolder=&rand=0.9080218531225145"
+            },
+            {
+              "name": "B",
+              "selected": true,
+              "url": "/api/view?filename=rgthree.compare._temp_nahci_00002_.png&type=temp&subfolder=&rand=0.4316383753532709"
+            }
+          ],
+          "image_a": [
+            "457",
+            0
+          ],
+          "image_b": [
+            "454",
+            0
+          ]
+        },
+        "class_type": "Image Comparer (rgthree)",
+        "_meta": {
+          "title": "Image Comparer (rgthree)"
+        }
+      },
+      "454": {
+        "inputs": {
+          "text": "supir-result"
+        },
+        "class_type": "GetNode",
+        "_meta": {
+          "title": "Get_supir-result"
+        }
+      },
+      "455": {
+        "inputs": {
+          "text": "Width: 1920 , Height: 2560",
+          "image": [
+            "417",
+            0
+          ]
+        },
+        "class_type": "easy imageSize",
+        "_meta": {
+          "title": "easy imageSize"
+        }
+      },
+      "457": {
+        "inputs": {
+          "text": "very sharp",
+          "images": [
+            "417",
+            0
+          ]
+        },
+        "class_type": "LayerFilter: Sharp & Soft",
+        "_meta": {
+          "title": "LayerFilter: Sharp & Soft"
+        }
+      },
+      "463": {
+        "inputs": {
+          "anything": [
+            "409",
+            0
+          ],
+          "anything2": [
+            "406",
+            0
+          ],
+          "anything3": [
+            "407",
+            0
+          ]
+        },
+        "class_type": "Anything Everywhere",
+        "_meta": {
+          "title": "Anything Everywhere"
+        }
+      },
+      "465": {
+        "inputs": {
+          "text": "original",
+          "IMAGE": [
+            "1",
+            0
+          ]
+        },
+        "class_type": "SetNode",
+        "_meta": {
+          "title": "Set_original"
+        }
+      },
+      "466": {
+        "inputs": {
+          "text": "original"
+        },
+        "class_type": "GetNode",
+        "_meta": {
+          "title": "Get_original"
+        }
+      },
+      "467": {
+        "inputs": {
+          "text": "FFHQDAT-result",
+          "IMAGE": [
+            "457",
+            0
+          ]
+        },
+        "class_type": "SetNode",
+        "_meta": {
+          "title": "Set_FFHQDAT-result"
+        }
+      },
+      "468": {
+        "inputs": {
+          "text": "FFHQDAT-result"
+        },
+        "class_type": "GetNode",
+        "_meta": {
+          "title": "Get_FFHQDAT-result"
+        }
+      },
+      "469": {
+        "inputs": {
+          "text": "FFHQDAT-result"
+        },
+        "class_type": "GetNode",
+        "_meta": {
+          "title": "Get_FFHQDAT-result"
+        }
+      },
+      "470": {
+        "inputs": {
+          "text": "original"
+        },
+        "class_type": "GetNode",
+        "_meta": {
+          "title": "Get_original"
+        }
+      },
+      "472": {
+        "inputs": {},
+        "class_type": "Label (rgthree)",
+        "_meta": {
+          "title": "Refer to Note for download links / guide"
+        }
+      },
+      "473": {
+        "inputs": {},
+        "class_type": "Label (rgthree)",
+        "_meta": {
+          "title": "AIORBUST"
+        }
+      }
+    }
+  }
+}
