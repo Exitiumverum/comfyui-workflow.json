@@ -29,8 +29,15 @@ ARG HF_API_TOKEN
 ENV HF_API_TOKEN=${HF_API_TOKEN}
 
 # Download VAE model (requires HF token for gated model)
-RUN comfy model download --url https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/main/ae.safetensors --relative-path models/vae --filename ae.safetensors
-
+RUN mkdir -p /comfyui/models/vae && \
+    if [ -n "$HF_API_TOKEN" ]; then \
+        wget --header="Authorization: Bearer $HF_API_TOKEN" \
+             -O /comfyui/models/vae/ae.safetensors \
+             https://huggingface.co/black-forest-labs/FLUX.1-schnell/resolve/main/ae.safetensors; \
+    else \
+        echo "⚠️  HF_API_TOKEN not set, skipping ae.safetensors download"; \
+    fi
+    
 RUN comfy model download --url https://huggingface.co/Comfy-Org/stable-diffusion-3.5-fp8/resolve/main/text_encoders/clip_l.safetensors --relative-path models/clip --filename clip_l.safetensors
 
 RUN comfy model download --url https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp8_e4m3fn.safetensors --relative-path models/clip --filename t5xxl_fp8_e4m3fn.safetensors
